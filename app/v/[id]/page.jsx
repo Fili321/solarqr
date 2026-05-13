@@ -89,10 +89,10 @@ export default async function VideoPage({ params }) {
       {/* Contenido inferior */}
       <div className="max-w-3xl mx-auto px-5 py-7 space-y-7">
 
-        {/* Descripción — sin etiqueta */}
+        {/* Descripción */}
         {video.description && (
-          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-5">
-            <p className="text-gray-300 leading-relaxed whitespace-pre-wrap text-sm">
+          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-5 overflow-hidden">
+            <p className="text-gray-300 leading-relaxed text-sm break-words overflow-wrap-anywhere">
               {video.description}
             </p>
           </div>
