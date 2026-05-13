@@ -143,10 +143,6 @@ function VideoForm({ existing, onSave, onCancel }) {
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState('');
-  const [showContact, setShowContact] = useState(
-    !!(existing?.instagram_url || existing?.facebook_url || existing?.tiktok_url ||
-       existing?.youtube_url || existing?.whatsapp || existing?.website_url || existing?.phone)
-  );
   const fileRef = useRef();
   const isEdit = !!existing;
 
@@ -212,45 +208,44 @@ function VideoForm({ existing, onSave, onCancel }) {
     <div className="bg-gray-900 border border-gray-700/60 rounded-2xl p-6">
       <h2 className="text-base font-semibold text-white mb-5">{isEdit ? '✏️ Editar video' : '➕ Nuevo video'}</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
+
         <div>
           <label className="block text-xs font-medium text-gray-400 mb-1.5">Título *</label>
           <input type="text" value={title} onChange={e => setTitle(e.target.value)} placeholder="Ej: Demo del producto"
             className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm" />
         </div>
+
         <div>
           <label className="block text-xs font-medium text-gray-400 mb-1.5">Descripción</label>
           <textarea value={description} onChange={e => setDescription(e.target.value)} placeholder="Descripción opcional..." rows={3}
             className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm resize-none" />
         </div>
+
         <div>
           <label className="block text-xs font-medium text-gray-400 mb-1.5">{isEdit ? 'Reemplazar video (opcional)' : 'Archivo de video *'}</label>
           <div onClick={() => fileRef.current?.click()}
             className={`border-2 border-dashed rounded-xl p-5 text-center cursor-pointer transition ${file ? 'border-indigo-500 bg-indigo-500/10' : 'border-gray-700 hover:border-gray-600'}`}>
             {file
               ? <div><p className="text-indigo-300 font-medium text-sm">{file.name}</p><p className="text-gray-500 text-xs mt-1">{(file.size / 1024 / 1024).toFixed(1)} MB</p></div>
-              : <div><p className="text-2xl mb-1.5">🎬</p><p className="text-gray-400 text-sm">Haz clic para seleccionar</p><p className="text-gray-600 text-xs mt-1">MP4, MOV, WebM…</p></div>
-            }
+              : <div><p className="text-2xl mb-1.5">🎬</p><p className="text-gray-400 text-sm">Haz clic para seleccionar</p><p className="text-gray-600 text-xs mt-1">MP4, MOV, WebM…</p></div>}
           </div>
           <input ref={fileRef} type="file" accept="video/*" className="hidden" onChange={e => setFile(e.target.files[0] || null)} />
         </div>
 
+        {/* Contacto — siempre visible */}
         <div>
-          <button type="button" onClick={() => setShowContact(!showContact)}
-            className="flex items-center gap-2 text-xs font-medium text-gray-400 hover:text-white transition">
-            <span className={`transition-transform inline-block ${showContact ? 'rotate-90' : ''}`}>▶</span>
+          <p className="text-xs font-medium text-gray-400 mb-3">
             Contacto y redes sociales <span className="text-gray-600">(opcional)</span>
-          </button>
-          {showContact && (
-            <div className="mt-3 space-y-2.5 bg-gray-800/40 rounded-xl p-4 border border-gray-700/40">
-              <Field icon="📞" placeholder="+1 305 555 0000 (Teléfono)" value={phone} onChange={setPhone} type="tel" />
-              <Field icon="💬" placeholder="+1 305 555 0000 (WhatsApp)" value={whatsapp} onChange={setWhatsapp} type="tel" />
-              <Field icon="📸" placeholder="https://instagram.com/tuperfil" value={instagram} onChange={setInstagram} />
-              <Field icon="🎵" placeholder="https://tiktok.com/@tuusuario" value={tiktok} onChange={setTiktok} />
-              <Field icon="▶️" placeholder="https://youtube.com/@tucanal" value={youtube} onChange={setYoutube} />
-              <Field icon="👥" placeholder="https://facebook.com/tupagina" value={facebook} onChange={setFacebook} />
-              <Field icon="🌐" placeholder="https://tusitio.com" value={website} onChange={setWebsite} />
-            </div>
-          )}
+          </p>
+          <div className="space-y-2.5 bg-gray-800/40 rounded-xl p-4 border border-gray-700/40">
+            <Field icon="📞" placeholder="+1 305 555 0000 (Teléfono)" value={phone} onChange={setPhone} type="tel" />
+            <Field icon="💬" placeholder="+1 305 555 0000 (WhatsApp)" value={whatsapp} onChange={setWhatsapp} type="tel" />
+            <Field icon="📸" placeholder="https://instagram.com/tuperfil" value={instagram} onChange={setInstagram} />
+            <Field icon="🎵" placeholder="https://tiktok.com/@tuusuario" value={tiktok} onChange={setTiktok} />
+            <Field icon="▶️" placeholder="https://youtube.com/@tucanal" value={youtube} onChange={setYoutube} />
+            <Field icon="👥" placeholder="https://facebook.com/tupagina" value={facebook} onChange={setFacebook} />
+            <Field icon="🌐" placeholder="https://tusitio.com" value={website} onChange={setWebsite} />
+          </div>
         </div>
 
         {uploading && <div><p className="text-xs text-gray-400">{progress < 95 ? `Subiendo... ${progress}%` : 'Guardando...'}</p><ProgressBar progress={progress} /></div>}
