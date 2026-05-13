@@ -1,19 +1,30 @@
 import { NextResponse } from 'next/server';
 
+function isAuthenticated(request) {
+  const token = request.cookies.get('admin_token')?.value;
+  const expected = Buffer.from(
+    `${process.env.ADMIN_PASSWORD}:${process.env.ADMIN_PASSWORD}`
+  ).toString('base64');
+  return token === expected;
+}
+
 export function middleware(request) {
   const { pathname } = request.nextUrl;
 
-  // Only protect /admin routes (not /admin itself when showing login)
-  if (pathname.startsWith('/admin')) {
-    const token = request.cookies.get('admin_token')?.value;
-    const expectedToken = Buffer.from(
-      `${process.env.ADMIN_PASSWORD}:${process.env.ADMIN_PASSWORD}`
-    ).toString('base64');
-
-    // Let the admin page load even without token (it handles the login UI)
-    // Only block API calls from non-authenticated users
-    if (pathname.startsWith('/api/') && token !== expectedToken) {
+  // Proteger las API routes — devuelve 401 si no está autenticado
+  if (
+    pathname.startsWith('/api/videos') ||
+    pathname.startsWith('/api/upload')
+  ) {
+    if (!isAuthenticated(request)) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+    }
+  }
+
+  // Para /admin — si no está autenticado redirige al login
+  if (pathname === '/admin' || pathname.startsWith('/admin/')) {
+    if (!isAuthenticated(request)) {
+      return NextResponse.redirect(new URL('/login', request.url));
     }
   }
 
@@ -21,5 +32,5 @@ export function middleware(request) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/api/videos/:path*', '/api/upload/:path*'],
+  matcher: ['/admin', '/admin/:path*', '/api/videos/:path*', '/api/upload/:path*'],
 };
