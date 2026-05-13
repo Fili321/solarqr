@@ -222,14 +222,32 @@ function VideoForm({ existing, onSave, onCancel }) {
         </div>
 
         <div>
-          <label className="block text-xs font-medium text-gray-400 mb-1.5">{isEdit ? 'Reemplazar video (opcional)' : 'Archivo de video *'}</label>
+          <label className="block text-xs font-medium text-gray-400 mb-1.5">
+            {isEdit ? 'Reemplazar video (opcional)' : 'Archivo de video *'}
+            <span className="text-gray-600 font-normal ml-1">(máx. 200 MB)</span>
+          </label>
           <div onClick={() => fileRef.current?.click()}
             className={`border-2 border-dashed rounded-xl p-5 text-center cursor-pointer transition ${file ? 'border-indigo-500 bg-indigo-500/10' : 'border-gray-700 hover:border-gray-600'}`}>
             {file
               ? <div><p className="text-indigo-300 font-medium text-sm">{file.name}</p><p className="text-gray-500 text-xs mt-1">{(file.size / 1024 / 1024).toFixed(1)} MB</p></div>
-              : <div><p className="text-2xl mb-1.5">🎬</p><p className="text-gray-400 text-sm">Haz clic para seleccionar</p><p className="text-gray-600 text-xs mt-1">MP4, MOV, WebM…</p></div>}
+              : <div><p className="text-2xl mb-1.5">🎬</p><p className="text-gray-400 text-sm">Haz clic para seleccionar</p><p className="text-gray-600 text-xs mt-1">MP4, MOV, WebM… hasta 200 MB</p></div>}
           </div>
-          <input ref={fileRef} type="file" accept="video/*" className="hidden" onChange={e => setFile(e.target.files[0] || null)} />
+          <input
+            ref={fileRef}
+            type="file"
+            accept="video/*"
+            className="hidden"
+            onChange={e => {
+              const f = e.target.files[0];
+              if (!f) return;
+              if (f.size > 200 * 1024 * 1024) {
+                alert('El archivo no puede superar 200 MB');
+                e.target.value = '';
+                return;
+              }
+              setFile(f);
+            }}
+          />
         </div>
 
         {/* Contacto — siempre visible */}

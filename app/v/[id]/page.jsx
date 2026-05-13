@@ -60,9 +60,9 @@ export default async function VideoPage({ params }) {
   return (
     <div className="min-h-screen bg-gray-950">
 
-      {/* Header con título */}
+      {/* Título */}
       <div className="w-full px-5 pt-7 pb-5 max-w-3xl mx-auto">
-        <div className="flex items-center gap-3 mb-1">
+        <div className="flex items-center gap-3">
           <div className="w-1 h-7 rounded-full bg-gradient-to-b from-orange-400 to-orange-600" />
           <h1 className="text-2xl md:text-3xl font-bold text-white leading-tight tracking-tight">
             {video.title}
@@ -70,7 +70,7 @@ export default async function VideoPage({ params }) {
         </div>
       </div>
 
-      {/* Video — grande */}
+      {/* Video */}
       <div className="w-full bg-black">
         <div className="max-w-3xl mx-auto">
           <video
@@ -79,7 +79,7 @@ export default async function VideoPage({ params }) {
             autoPlay
             playsInline
             className="w-full"
-            style={{ maxHeight: '80vh' }}
+            style={{ maxHeight: '85vh' }}
           >
             Tu navegador no soporta reproducción de video.
           </video>
@@ -89,13 +89,9 @@ export default async function VideoPage({ params }) {
       {/* Contenido inferior */}
       <div className="max-w-3xl mx-auto px-5 py-7 space-y-7">
 
-        {/* Descripción */}
+        {/* Descripción — sin etiqueta */}
         {video.description && (
           <div className="bg-gray-900 border border-gray-800 rounded-2xl p-5">
-            <div className="flex items-center gap-2 mb-3">
-              <div className="w-2 h-2 rounded-full bg-blue-400" />
-              <p className="text-xs font-semibold text-blue-400 uppercase tracking-widest">Descripción</p>
-            </div>
             <p className="text-gray-300 leading-relaxed whitespace-pre-wrap text-sm">
               {video.description}
             </p>
@@ -105,7 +101,7 @@ export default async function VideoPage({ params }) {
         {/* Contacto y redes */}
         {socials.length > 0 && (
           <div>
-            <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center gap-3 mb-4">
               <div className="w-2 h-2 rounded-full bg-green-400" />
               <p className="text-xs font-semibold text-green-400 uppercase tracking-widest">Contacto</p>
               <div className="flex-1 h-px bg-gray-800" />
