@@ -7,15 +7,12 @@ export async function GET() {
 }
 
 export async function POST(request) {
-  const { title, description, r2Key } = await request.json();
+  const { title, description, r2Key, instagramUrl, facebookUrl, tiktokUrl, youtubeUrl, whatsapp, websiteUrl, phone } = await request.json();
 
   if (!title || !r2Key) {
-    return NextResponse.json(
-      { error: 'title y r2Key son requeridos' },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: 'title y r2Key son requeridos' }, { status: 400 });
   }
 
-  const video = await createVideo({ title, description, r2Key });
+  const video = await createVideo({ title, description, r2Key, instagramUrl, facebookUrl, tiktokUrl, youtubeUrl, whatsapp, websiteUrl, phone });
   return NextResponse.json(video, { status: 201 });
 }
